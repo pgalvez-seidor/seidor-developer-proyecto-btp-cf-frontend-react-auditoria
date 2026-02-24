@@ -1,0 +1,91 @@
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.dialogOverlay.open {
+  opacity: 1;
+}
+
+.dialogContent {
+  background: white;
+  border-radius: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Responsive width */
+  width: 95vw;
+  max-height: 90vh;
+  /* Animation */
+  transform: scale(0.96) translateY(8px);
+  opacity: 0;
+  transition:
+    transform 0.25s ease-out,
+    opacity 0.25s ease-out;
+  box-shadow:
+    0 20px 40px -8px rgba(0, 0, 0, 0.15),
+    0 8px 16px -4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Size breakpoints */
+@media (min-width: 560px) {
+  .dialogContent {
+    width: 90vw;
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 768px) {
+  .dialogContent {
+    max-width: 600px;
+  }
+}
+
+/* Wide variant */
+:global(.tw-w-\[850px\]) {
+  max-width: 850px !important;
+  width: 95vw !important;
+}
+
+.dialogContent.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.dialogHeader {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.dialogTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dialogBody {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.dialogFooter {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

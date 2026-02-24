@@ -1,0 +1,40 @@
+{
+  "xsappname": "nuam-users-comparison",
+  "tenant-mode": "dedicated",
+  "oauth2-configuration": {
+    "token-validity": 7200,
+    "refresh-token-validity": 86400,
+    "redirect-uris": [
+      "https://*.cfapps.us10-001.hana.ondemand.com/**",
+      "https://*.hana.ondemand.com/**"
+    ]
+  },
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.user",
+      "description": "User access"
+    },
+    {
+      "name": "$ACCEPT_GRANTED_AUTHORITIES",
+      "description": "Accept granted authorities"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "NuamUser",
+      "description": "NUAM User Role",
+      "scope-references": [
+        "$XSAPPNAME.user"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "NUAM_User",
+      "description": "Acceso a NUAM Usuarios",
+      "role-template-references": [
+        "$XSAPPNAME.NuamUser"
+      ]
+    }
+  ]
+}

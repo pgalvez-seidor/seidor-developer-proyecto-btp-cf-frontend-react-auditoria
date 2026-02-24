@@ -1,0 +1,30 @@
+{
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "logout": {
+        "logoutEndpoint": "/logout",
+        "logoutPage": "/logout.html"
+    },
+    "routes": [
+        {
+            "source": "^/nuam-api/(.*)$",
+            "target": "/$1",
+            "destination": "nuam-apigateway-backend-dev",
+            "authenticationType": "none",
+            "csrfProtection": false
+        },
+        {
+            "source": "^/api/base/auditoria/(.*)$",
+            "target": "/api/base/auditoria/$1",
+            "destination": "nuam-apigateway-backend-dev",
+            "authenticationType": "none",
+            "csrfProtection": false
+        },
+        {
+            "source": "^(.*)$",
+            "target": "$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+_schema-version: '3.2'
+ID: nuam-react-maestros-standalone
+version: 0.0.1
+description: "NUAM Maestros Frontend (React Standalone)"
+
+parameters:
+  enable-parallel-deployments: true
+
+build-parameters:
+  before-all: []
+
+modules:
+  - name: nuam-react-maestros-app
+    type: html5
+    path: .
+    build-parameters:
+      builder: custom
+      build-result: dist
+      supported-platforms: []
+      commands: [] # Build done in deploy.sh
+
+  - name: nuam-maestros-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: xsuaa-central
+      - name: nuam-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: nuam-react-maestros-app
+          artifacts:
+            - dist.zip
+          target-path: resources
+
+resources:
+  - name: nuam-html5-repo-host
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: nuam-html5-repo-host
+
+  - name: xsuaa-central
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: xsuaa-central
+
+  - name: nuam-destination-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: nuam-destination-service

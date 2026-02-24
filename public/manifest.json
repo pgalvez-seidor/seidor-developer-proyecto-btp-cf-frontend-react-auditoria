@@ -1,0 +1,58 @@
+{
+    "_version": "1.12.0",
+    "sap.app": {
+        "id": "nuam.react.auditoria",
+        "type": "application",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "Auditoría del Sistema",
+        "description": "Aplicación para consulta y monitoreo de auditorías de transacciones del sistema NUAM.",
+        "sourceTemplate": {
+            "id": "html5moduletemplates.basicreactapp",
+            "version": "1.4.0"
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "manage-nuam-auditoria": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "NuamAuditoria",
+                    "action": "manage",
+                    "title": "Auditoría",
+                    "info": "REACT",
+                    "subTitle": "REACT",
+                    "icon": "sap-icon://history"
+                }
+            }
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "nuam"
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://history",
+            "favIcon": "ico/favicon.ico",
+            "phone": "ico/favicon_ios_light.png",
+            "phone@2": "ico/favicon_ios_light.png",
+            "tablet": "ico/favicon_ios_light.png",
+            "tablet@2": "ico/favicon_ios_light.png"
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "dependencies": {
+            "minUI5Version": "1.60.2",
+            "libs": {}
+        }
+    }
+}

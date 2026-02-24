@@ -1,0 +1,243 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEIDOR THEME LIGHT
+   Controles en forma de píldora (border-radius: 999px).
+
+   Estrategia triple para superar el tema Horizon cargado dinámicamente:
+     1. CSS custom property con !important directamente en el elemento host
+        (gana sobre el :root del tema sin importar el orden de carga)
+     2. border-radius directo en el host (para que overflow:hidden del shadow
+        DOM también recorte las esquinas)
+     3. ::part() para penetrar el shadow DOM donde el componente lo exponga
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Suprimir TODOS los indicadores de foco SAP globalmente ───────────────── */
+/* Los componentes SAP leen estas variables del inherited cascade (incluyendo   */
+/* shadow DOM). Al forzarlas aquí ganamos sobre el tema Horizon aunque cargue  */
+/* dinámicamente después, porque nuestra hoja de estilos está en el light DOM. */
+
+:root {
+  --sapContent_FocusStyle: none !important;
+  --sapContent_FocusWidth: 0px !important;
+  --sapContent_FocusColor: transparent !important;
+}
+
+/* ─── Buttons ──────────────────────────────────────────────────────────────── */
+
+ui5-button {
+  --sapButton_BorderCornerRadius: 999px !important;
+  border-radius: 999px !important;
+}
+
+ui5-button::part(button) {
+  border-radius: 999px !important;
+}
+
+/* Eliminar el indicador interno del shadow DOM (el tema Horizon usa :focus Y
+   :focus-visible por separado, hay que neutralizar ambos) */
+ui5-button::part(button):focus,
+ui5-button::part(button):focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Glow pill en el host — se activa solo con navegación por teclado */
+ui5-button:focus-visible,
+ui5-button:focus-within {
+  outline: 2px solid rgba(0, 160, 227, 0.6) !important;
+  outline-offset: 2px !important;
+  border-radius: 999px !important;
+}
+
+/* ─── Input fields ─────────────────────────────────────────────────────────── */
+
+ui5-input,
+ui5-date-picker,
+ui5-time-picker,
+ui5-textarea {
+  --sapField_BorderCornerRadius: 999px !important;
+  /* Quitar el cuadro de focus interno rectangular del tema Horizon */
+  --sapContent_FocusStyle: none !important;
+  border-radius: 999px !important;
+}
+
+/* Penetrar shadow DOM — ui5-input expone el part "root" en v2 */
+ui5-input::part(root),
+ui5-date-picker::part(root),
+ui5-textarea::part(root) {
+  border-radius: 999px !important;
+  outline: none !important;
+}
+
+/* Focus pill: box-shadow sigue el border-radius → glow redondeado */
+ui5-input:focus-within::part(root),
+ui5-date-picker:focus-within::part(root),
+ui5-textarea:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.45) !important;
+  border-color: #00a0e3 !important;
+}
+
+/* ─── Select / ComboBox / MultiComboBox ────────────────────────────────────── */
+
+ui5-select,
+ui5-combobox,
+ui5-multi-combobox {
+  --sapField_BorderCornerRadius: 999px !important;
+  --sapButton_BorderCornerRadius: 999px !important;
+  --sapContent_FocusStyle: none !important;
+  border-radius: 999px !important;
+}
+
+ui5-select::part(root),
+ui5-multi-combobox::part(root),
+ui5-combobox::part(root) {
+  border-radius: 999px !important;
+  outline: none !important;
+}
+
+/* Focus pill para selects y combos */
+ui5-select:focus-within::part(root),
+ui5-multi-combobox:focus-within::part(root),
+ui5-combobox:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.45) !important;
+  border-color: #00a0e3 !important;
+}
+
+/* ─── Tokens (chips dentro de MultiComboBox) ───────────────────────────────── */
+
+ui5-token {
+  border-radius: 999px !important;
+}
+
+ui5-token::part(root) {
+  border-radius: 999px !important;
+}
+
+/* ─── Dialogs (ui5-dialog — DialogRoles, MessageBox) ──────────────────────── */
+
+ui5-dialog {
+  --sapPopover_BorderCornerRadius: 1.5rem !important;
+}
+
+ui5-dialog::part(content) {
+  border-radius: 1.5rem !important;
+}
+
+/* MessageBox usa ui5-dialog internamente */
+ui5-message-box {
+  --sapPopover_BorderCornerRadius: 1.5rem !important;
+}
+
+/* ─── Popovers (sugerencias, desplegables) ─────────────────────────────────── */
+
+ui5-popover,
+ui5-responsive-popover {
+  --sapPopover_BorderCornerRadius: 1.25rem !important;
+}
+
+/* ─── Time Picker (igual que inputs) ───────────────────────────────────────── */
+
+ui5-time-picker::part(root) {
+  border-radius: 999px !important;
+  outline: none !important;
+}
+
+ui5-time-picker:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.45) !important;
+  border-color: #00a0e3 !important;
+}
+
+/* ─── CheckBox / RadioButton ───────────────────────────────────────────────── */
+
+ui5-checkbox,
+ui5-radio-button {
+  --sapContent_FocusStyle: none !important;
+}
+
+ui5-checkbox::part(root),
+ui5-radio-button::part(root) {
+  outline: none !important;
+}
+
+ui5-checkbox:focus-within::part(root),
+ui5-radio-button:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.45) !important;
+  border-radius: 6px !important;
+}
+
+/* ─── Switch ────────────────────────────────────────────────────────────────── */
+
+ui5-switch {
+  --sapContent_FocusStyle: none !important;
+}
+
+ui5-switch:focus-within {
+  outline: 2px solid rgba(0, 160, 227, 0.6) !important;
+  outline-offset: 2px !important;
+  border-radius: 999px !important;
+}
+
+/* ─── Step Input / File Uploader ───────────────────────────────────────────── */
+
+ui5-step-input {
+  --sapField_BorderCornerRadius: 999px !important;
+  --sapContent_FocusStyle: none !important;
+  border-radius: 999px !important;
+}
+
+ui5-step-input::part(root) {
+  border-radius: 999px !important;
+  outline: none !important;
+}
+
+ui5-step-input:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.45) !important;
+  border-color: #00a0e3 !important;
+}
+
+/* ─── List / ListItem (diálogos de roles, etc.) ────────────────────────────── */
+
+ui5-list::part(list),
+ui5-list-item-standard::part(root),
+ui5-list-item-standard::part(native-li) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+ui5-list-item-standard:focus,
+ui5-list-item-standard:focus-visible,
+ui5-list-item-standard:focus-within {
+  outline: none !important;
+}
+
+ui5-list-item-standard:focus-visible::part(root),
+ui5-list-item-standard:focus-within::part(root) {
+  box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.35) inset !important;
+}
+
+/* ─── Table rows / AnalyticalTable ─────────────────────────────────────────── */
+
+/* AnalyticalTable usa divs nativos — eliminar outline del navegador */
+[role="row"]:focus,
+[role="row"]:focus-visible,
+[role="gridcell"]:focus,
+[role="gridcell"]:focus-visible,
+[role="columnheader"]:focus,
+[role="columnheader"]:focus-visible {
+  outline: none !important;
+}
+
+/* ─── Panel / Bar / breadcrumb (contenedores focusables) ───────────────────── */
+
+ui5-panel::part(root):focus,
+ui5-panel::part(root):focus-visible,
+ui5-bar::part(bar):focus,
+ui5-bar::part(bar):focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Scrollable content areas inside dialogs */
+.ui5-dialog-content:focus,
+[ui5-dialog] *:focus:not(button):not(input):not(select):not(textarea) {
+  outline: none !important;
+}
