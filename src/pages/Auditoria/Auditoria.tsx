@@ -392,9 +392,6 @@ export const Auditoria = () => {
     <div style={{ position: 'relative' }}>
       <div id='header-section'>
         <HeaderSection title='Auditoría' principal={true}>
-          <div className='tw-mb-4 tw-text-white tw-text-sm tw-font-bold tw-tracking-wide'>
-            Transacciones ({oPaginationTableAuditoria ? oPaginationTableAuditoria.totalItems : '0'})
-          </div>
           <CollapseWithPin
             storageKey='auditoria-filters'
             className='tw-pb-2'
@@ -580,7 +577,13 @@ export const Auditoria = () => {
         </HeaderSection>
       </div>
 
-      <div className='tw-px-4 tw-py-4'>
+      <div className='tw-px-4 tw-pt-4 tw-pb-2'>
+        <div className='tw-text-slate-900 tw-text-lg tw-font-bold'>
+          Transacciones ({oPaginationTableAuditoria ? oPaginationTableAuditoria.totalItems : '0'})
+        </div>
+      </div>
+
+      <div className='tw-px-4 tw-pb-4'>
         <div className='tw-bg-white tw-rounded-[1.5rem] tw-border tw-border-slate-200 tw-shadow-lg tw-overflow-hidden' style={{ height: tableHeight }}>
           <AnalyticalTable
           headerRowHeight={60}
