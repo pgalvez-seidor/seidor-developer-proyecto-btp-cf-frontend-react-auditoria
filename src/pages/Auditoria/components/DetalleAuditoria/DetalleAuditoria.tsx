@@ -1,4 +1,4 @@
-import MazdaButton from '@/components/MazdaButton/MazdaButton';
+import NuamButton from '@/components/NuamButton/NuamButton';
 import {
   Bar,
   Button,
@@ -31,7 +31,7 @@ export const DetalleAuditoria = props => {
           design='Footer'
           endContent={
             <>
-              <MazdaButton
+              <NuamButton
                 variant='secondary'
                 icon='sys-cancel'
                 onClick={function ks() {
@@ -42,12 +42,12 @@ export const DetalleAuditoria = props => {
                 }}
               >
                 Cancelar
-              </MazdaButton>
+              </NuamButton>
             </>
           }
         />
       }
-      headerText={'Detalle: ' + obtenerIDTranssaccion(datosAuditoria.id_transaccion)}
+      headerText={'Detalle: ' + obtenerIDTranssaccion(datosAuditoria.idTransaccion)}
       onBeforeClose={function ks() {}}
       onBeforeOpen={function ks() {}}
       onClose={function ks() {}}
@@ -58,38 +58,38 @@ export const DetalleAuditoria = props => {
         labelSpan='S12 M4 L4 XL4'
         layout='S1 M1 L2 XL2'
       >
-        <FormItem labelContent={<Label>Nombre:</Label>}>
-          <Text>{datosAuditoria.nombre_proceso}</Text>
+        <FormItem labelContent={<Label>Nombre Proceso:</Label>}>
+          <Text>{datosAuditoria.nombreProceso}</Text>
         </FormItem>
         <FormItem labelContent={<Label>Terminal:</Label>}>
           <Text>{datosAuditoria.terminal}</Text>
         </FormItem>
-        <FormItem labelContent={<Label>Aplicacion:</Label>}>
+        <FormItem labelContent={<Label>Aplicación:</Label>}>
           <Text>{datosAuditoria.aplicacion}</Text>
         </FormItem>
         <FormItem labelContent={<Label>Fecha de Creación:</Label>}>
-          <Text>{datosAuditoria.created_at_filtro}</Text>
+          <Text>{datosAuditoria.createdAt ? new Date(datosAuditoria.createdAt).toLocaleString('es-ES') : ''}</Text>
         </FormItem>
         <FormItem labelContent={<Label>Tiempo:</Label>}>
-          <Text>{datosAuditoria.tiempo_proceso}</Text>
+          <Text>{datosAuditoria.tiempoProceso} ms</Text>
         </FormItem>
         <FormItem labelContent={<Label>Method:</Label>}>
-          <Text>{datosAuditoria.method_envio}</Text>
+          <Text>{datosAuditoria.methodEnvio}</Text>
         </FormItem>
 
         <FormItem labelContent={<Label>Estado:</Label>}>
-          <Text>{datosAuditoria.id_estado === 1 ? 'Ok' : 'Error'}</Text>
+          <Text>{datosAuditoria.idEstado === 1 ? 'Ok' : 'Error'}</Text>
         </FormItem>
 
-        <FormItem labelContent={<Label>Request Params:</Label>}>
-          <Text>entrada_proceso</Text>
+        <FormItem labelContent={<Label>Usuario:</Label>}>
+          <Text>{datosAuditoria.usuario}</Text>
         </FormItem>
 
         <FormItem labelContent={<Label>Request Body:</Label>}>
           <TextArea
             rows={12}
             readonly={true}
-            value={JSON.stringify(datosAuditoria.entrada_proceso)}
+            value={JSON.stringify(datosAuditoria.entradaProceso, null, 2)}
           ></TextArea>
         </FormItem>
 
@@ -97,7 +97,7 @@ export const DetalleAuditoria = props => {
           <TextArea
             rows={12}
             readonly={true}
-            value={JSON.stringify(datosAuditoria.respuesta_proceso)}
+            value={JSON.stringify(datosAuditoria.respuestaProceso, null, 2)}
           ></TextArea>
         </FormItem>
       </Form>

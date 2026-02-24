@@ -21,33 +21,24 @@ import {
   getProcesos,
 } from '../../services/auditoria.service';
 import { DetalleAuditoria } from './components/DetalleAuditoria/DetalleAuditoria';
-import { listAuditoria } from '../../utils/dummies';
 import { aplicaciones, paginacionOffset } from '../../utils/constants';
-import { TableAuditoriaContext } from '@/contexts/TableAuditoria/TableAuditoriaContext';
+import { AuditoriaContext } from '@/contexts/AuditoriaContext/AuditoriaContext';
 import { LoadingContext } from '@/contexts/LoadingContext/LoadingContext';
 import { SnackbarContext } from '@/contexts/SnackbarContext/SnackbarContext';
-import { dateToStringDDMMYYYY, obtenerFechaActualFormatDD_MM_YYYY } from '@/utils/util';
-import { getDataListadoUsuarios } from '@/services/usuario.service';
-import { DataContext } from '@/contexts/DataContext/DataContext';
-import HeaderInfo from '@/components/HeaderInfo/HeaderInfo';
-import { formatDateHour } from '../RegistroWishlist/utils/dates';
-import MazdaButton from '@/components/MazdaButton/MazdaButton';
+import NuamButton from '@/components/NuamButton/NuamButton';
 import CollapseWithPin from '@/components/CollapseWithPin/CollapseWithPin';
 
 export const Auditoria = () => {
-  // const [page, setPage] = useState(1);
   const [fechaConsulta, setFechaConsulta] = useState<string>();
-  const { usuarioInfo } = useContext(DataContext);
-  const todayString = obtenerFechaActualFormatDD_MM_YYYY();
+  const todayString = new Date().toISOString().split('T')[0];
   const {
     tableAuditoria,
     setTableAuditoria,
     oPaginationTableAuditoria,
     setoPaginationTableAuditoria,
-
     page,
     setPage,
-  } = useContext(TableAuditoriaContext);
+  } = useContext(AuditoriaContext);
   const [dataAuditoria, setDataAuditoria] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [listaProcesos, setListaProcesos] = useState([]);
@@ -112,7 +103,7 @@ export const Auditoria = () => {
           Id Transacción
         </Text>
       ),
-      accessor: 'id_transaccion',
+      accessor: 'idTransaccion',
       Cell: ({ cell }) => (
         <div className='tw-w-full tw-text-left tw-pl-2  tw-whitespace-normal tw-break-words'>
           {cell.value}
@@ -124,12 +115,10 @@ export const Auditoria = () => {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold '>Fecha</Text>
       ),
-      accessor: 'fecha_transaccion',
+      accessor: 'createdAt',
       Cell: ({ cell }) => (
         <div className='tw-w-full tw-text-left tw-pl-2  tw-whitespace-normal tw-break-words'>
-          {/* {cell.value} */}
-
-          {dateToStringDDMMYYYY(cell.value)}
+          {cell.value ? new Date(cell.value).toLocaleString('es-ES') : ''}
         </div>
       ),
       minWidth: 150,
@@ -147,7 +136,7 @@ export const Auditoria = () => {
     {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>
-          Aplicacion
+          Aplicación
         </Text>
       ),
       accessor: 'aplicacion',
@@ -160,7 +149,7 @@ export const Auditoria = () => {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Method</Text>
       ),
-      accessor: 'method_envio',
+      accessor: 'methodEnvio',
       maxWidth: 120,
       Cell: ({ cell }) => (
         <div className='tw-w-full tw-text-left tw-pl-2'>{cell.value}</div>
@@ -170,7 +159,7 @@ export const Auditoria = () => {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Proceso</Text>
       ),
-      accessor: 'nombre_proceso',
+      accessor: 'nombreProceso',
       Cell: ({ cell }) => (
         <div className='tw-w-full tw-text-left tw-pl-2 tw-whitespace-normal tw-break-words'>
           {cell.value}
@@ -182,9 +171,9 @@ export const Auditoria = () => {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Tiempo</Text>
       ),
-      accessor: 'tiempo_proceso',
+      accessor: 'tiempoProceso',
       Cell: ({ cell }) => (
-        <div className='tw-w-full tw-text-left tw-pl-2'>{cell.value}</div>
+        <div className='tw-w-full tw-text-left tw-pl-2'>{cell.value} ms</div>
       ),
       width: 100,
       maxWidth: 100,
@@ -193,7 +182,7 @@ export const Auditoria = () => {
       Header: (
         <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Estado</Text>
       ),
-      accessor: 'id_estado',
+      accessor: 'idEstado',
       width: 100,
       Cell: ({ cell }) => {
         const state = {
@@ -203,7 +192,7 @@ export const Auditoria = () => {
         };
 
         const message = {
-          1: 'Activo',
+          1: 'Ok',
           2: 'Alerta',
           3: 'Error',
         };
@@ -222,15 +211,15 @@ export const Auditoria = () => {
     },
     {
       disableSortBy: true,
-      // responsivePopIn: true,
       id: 'actions',
       maxWidth: 100,
       Cell: ({ cell }) => {
         return (
           <div className='tw-w-full tw-flex tw-justify-center'>
-            <MazdaButton
+            <NuamButton
               variant='secondary'
               icon='show'
+              round={true}
               onClick={() => selectRowAuditoriaInfo(cell)}
             />
           </div>
@@ -285,15 +274,9 @@ export const Auditoria = () => {
   };
 
   const getUsuarios = async () => {
-    const process = await getDataListadoUsuarios();
-
-    const processTransform = process.oDataResponse.oData.map(el => {
-      return {
-        label: el.correo,
-        value: el.correo,
-      };
-    });
-    setListaUsuarios(processTransform);
+    // TODO: Implementar getListadoUsuarios cuando exista el endpoint
+    // Por ahora, lista vacía
+    setListaUsuarios([]);
   };
 
   const getApp = async () => {
@@ -415,25 +398,11 @@ export const Auditoria = () => {
             defaultOpen={true}
             stickyWhenPinned={true}
           >
-            <div className=' tw-flex tw-gap-8'>
-              <div>
-                {usuarioInfo ? (
-                  <HeaderInfo
-                    label='Nombre'
-                    value={`${usuarioInfo.family_name} ${usuarioInfo.given_name}`}
-                  />
-                ) : (
-                  <></>
-                )}
+            {fechaConsulta && (
+              <div className='tw-mb-4 tw-text-sm tw-text-slate-600'>
+                Última consulta: {fechaConsulta}
               </div>
-              <div>
-                {fechaConsulta ? (
-                  <HeaderInfo label='Fecha Consulta' value={fechaConsulta} />
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
+            )}
 
             <div className='tw-flex tw-row-auto'>
               <div className='tw-flex tw-flex-wrap tw-gap-4 tw-mb-4 tw-w-full'>
@@ -578,19 +547,18 @@ export const Auditoria = () => {
 
               <div className='tw-ml-4 tw-pb-5 tw-flex'>
                 <div className='tw-flex tw-w-full tw-justify-end tw-items-end tw-gap-2'>
-                  <MazdaButton
+                  <NuamButton
                     variant='primary'
                     icon='search'
                     onClick={() => {
-                      setFechaConsulta(formatDateHour(new Date()));
+                      setFechaConsulta(new Date().toLocaleString('es-ES'));
                       filtrarLista();
                     }}
-                    design='Emphasized'
                   >
                     Buscar
-                  </MazdaButton>
+                  </NuamButton>
 
-                  <MazdaButton
+                  <NuamButton
                     variant='secondary'
                     icon='clear-filter'
                     onClick={() => {
@@ -598,7 +566,7 @@ export const Auditoria = () => {
                     }}
                   >
                     Limpiar
-                  </MazdaButton>
+                  </NuamButton>
                 </div>
               </div>
             </div>
