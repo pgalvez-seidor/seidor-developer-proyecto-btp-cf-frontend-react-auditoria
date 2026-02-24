@@ -172,29 +172,31 @@ export default function CollapseWithPin({
         {children}
       </div>
 
-      {/* manija centrada, con z-index alto */}
-      <div
-        className={`
-          tw-absolute tw-left-1/2 -tw-translate-x-1/2
-          ${liteHandle ? 'tw-bottom-[-20px]' : 'tw-bottom-[-18px] md:tw-bottom-[-20px]'}
-          tw-flex tw-items-center tw-gap-2 tw-z-40 pointer-events-auto
-        `}
-      >
-        <Button
-          design='Transparent'
-          onClick={toggleOpen}
-          title={isOpen ? 'Contraer filtros' : 'Expandir filtros'}
+      {/* manija centrada - OCULTA por solicitud del usuario */}
+      {false && (
+        <div
           className={`
-            ${liteHandle
-              ? 'tw-bg-white/10 tw-border-white/20 tw-text-white tw-backdrop-blur-md hover:tw-bg-white/20'
-              : 'tw-bg-white tw-border tw-border-slate-200 tw-shadow-sm tw-px-3'}
-            tw-rounded-full tw-transition-all tw-duration-300
+            tw-absolute tw-left-1/2 -tw-translate-x-1/2
+            ${liteHandle ? 'tw-bottom-[-20px]' : 'tw-bottom-[-18px] md:tw-bottom-[-20px]'}
+            tw-flex tw-items-center tw-gap-2 tw-z-40 pointer-events-auto
           `}
         >
-          {!liteHandle && <span className='tw-mr-2'>{isOpen ? 'Ocultar' : 'Mostrar'} filtros</span>}
-          <Icon name={isOpen ? 'slim-arrow-up' : 'slim-arrow-down'} className={liteHandle ? 'tw-w-6 tw-h-6' : ''} />
-        </Button>
-      </div>
+          <Button
+            design='Transparent'
+            onClick={toggleOpen}
+            title={isOpen ? 'Contraer filtros' : 'Expandir filtros'}
+            className={`
+              ${liteHandle
+                ? 'tw-bg-white/10 tw-border-white/20 tw-text-white tw-backdrop-blur-md hover:tw-bg-white/20'
+                : 'tw-bg-white tw-border tw-border-slate-200 tw-shadow-sm tw-px-3'}
+              tw-rounded-full tw-transition-all tw-duration-300
+            `}
+          >
+            {!liteHandle && <span className='tw-mr-2'>{isOpen ? 'Ocultar' : 'Mostrar'} filtros</span>}
+            <Icon name={isOpen ? 'slim-arrow-up' : 'slim-arrow-down'} className={liteHandle ? 'tw-w-6 tw-h-6' : ''} />
+          </Button>
+        </div>
+      )}
 
       {/* espacio para que la manija no se superponga con lo siguiente */}
       {/* <div className='tw-h-6 md:tw-h-7' /> */}

@@ -545,24 +545,28 @@ export const Auditoria = () => {
               </div>
 
               <div className='tw-ml-4 tw-pb-5 tw-flex'>
-                <div className='tw-flex tw-w-full tw-justify-end tw-items-end tw-gap-2'>
+                <div className='tw-flex tw-w-full tw-justify-end tw-items-end tw-gap-3'>
                   <NuamButton
-                    variant='primary'
+                    variant='secondary'
                     icon='search'
                     onClick={() => {
                       setFechaConsulta(new Date().toLocaleString('es-ES'));
                       filtrarLista();
                     }}
+                    className='!tw-bg-white !tw-text-[#0070f2] !tw-border-white !tw-shadow-md hover:!tw-shadow-lg'
+                    style={{ minWidth: '110px' }}
                   >
                     Buscar
                   </NuamButton>
 
                   <NuamButton
-                    variant='glass'
+                    variant='secondary'
                     icon='clear-filter'
                     onClick={() => {
                       setOptionFilters(initialStateFilters);
                     }}
+                    className='!tw-bg-white !tw-text-[#0070f2] !tw-border-white !tw-shadow-md hover:!tw-shadow-lg'
+                    style={{ minWidth: '110px' }}
                   >
                     Limpiar
                   </NuamButton>
