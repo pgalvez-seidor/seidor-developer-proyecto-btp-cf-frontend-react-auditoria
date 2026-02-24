@@ -396,7 +396,6 @@ export const Auditoria = () => {
             storageKey='auditoria-filters'
             className='tw-pb-2'
             defaultOpen={true}
-            stickyWhenPinned={true}
           >
             {fechaConsulta && (
               <div className='tw-mb-4 tw-text-sm tw-text-slate-600'>
