@@ -392,13 +392,16 @@ export const Auditoria = () => {
     <div style={{ position: 'relative' }}>
       <div id='header-section'>
         <HeaderSection title='Auditoría' principal={true}>
+          <div className='tw-mb-4 tw-text-white tw-text-sm tw-font-bold tw-tracking-wide'>
+            Transacciones ({oPaginationTableAuditoria ? oPaginationTableAuditoria.totalItems : '0'})
+          </div>
           <CollapseWithPin
             storageKey='auditoria-filters'
             className='tw-pb-2'
             defaultOpen={true}
           >
             {fechaConsulta && (
-              <div className='tw-mb-4 tw-text-sm tw-text-slate-600'>
+              <div className='tw-mb-4 tw-text-sm tw-text-white/70'>
                 Última consulta: {fechaConsulta}
               </div>
             )}
@@ -577,16 +580,9 @@ export const Auditoria = () => {
         </HeaderSection>
       </div>
 
-      <div id='table-header-section' className='w-full h-auto px-4'>
-        <div className='tw-flex'>
-          <div className='tw-w-[200px]  tw-font-semibold'>
-            Transacciones (
-            {oPaginationTableAuditoria ? oPaginationTableAuditoria.totalItems : '0'})
-          </div>
-        </div>
-      </div>
-      <div className='tw-px-4' style={{ height: tableHeight }}>
-        <AnalyticalTable
+      <div className='tw-px-4 tw-py-4'>
+        <div className='tw-bg-white tw-rounded-[1.5rem] tw-border tw-border-slate-200 tw-shadow-lg tw-overflow-hidden' style={{ height: tableHeight }}>
+          <AnalyticalTable
           headerRowHeight={60}
           id='table-container'
           columns={headers}
@@ -599,6 +595,7 @@ export const Auditoria = () => {
           visibleRows={dynamicRows}
           style={{ height: '100%', overflow: 'auto' }}
         />
+        </div>
       </div>
 
       {dialogDetalleAuditoria.open && (
