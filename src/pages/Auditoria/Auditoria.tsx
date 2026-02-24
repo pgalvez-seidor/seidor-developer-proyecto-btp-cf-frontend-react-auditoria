@@ -406,7 +406,7 @@ export const Auditoria = () => {
             <div className='tw-flex tw-row-auto'>
               <div className='tw-flex tw-flex-wrap tw-gap-4 tw-mb-4 tw-w-full'>
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Fecha Inicio</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Fecha Inicio</Label>
                   <DatePicker
                     formatPattern='dd/MM/YYYY'
                     onChange={handleFiltrosBusqueda}
@@ -419,7 +419,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Fecha Fin</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Fecha Fin</Label>
                   <DatePicker
                     formatPattern='dd/MM/YYYY'
                     onChange={handleFiltrosBusqueda}
@@ -432,7 +432,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Transacción</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Transacción</Label>
                   <Input
                     className='tw-w-full'
                     placeholder='Ingrese'
@@ -443,7 +443,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Aplicaciones</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Aplicaciones</Label>
                   <MultiComboBox
                     showSelectAll={true}
                     className='tw-w-full'
@@ -469,7 +469,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Usuarios</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Usuarios</Label>
                   <MultiComboBox
                     showSelectAll={true}
                     className='tw-w-full'
@@ -494,7 +494,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Procesos</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Procesos</Label>
                   <MultiComboBox
                     showSelectAll={true}
                     className='tw-w-full'
@@ -519,7 +519,7 @@ export const Auditoria = () => {
                 </div>
 
                 <div className='tw-flex tw-flex-col tw-w-full sm:tw-w-[260px]'>
-                  <Label>Estado</Label>
+                  <Label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block' }}>Estado</Label>
                   <MultiComboBox
                     className='tw-w-full'
                     showSelectAll={true}
@@ -558,7 +558,7 @@ export const Auditoria = () => {
                   </NuamButton>
 
                   <NuamButton
-                    variant='secondary'
+                    variant='glass'
                     icon='clear-filter'
                     onClick={() => {
                       setOptionFilters(initialStateFilters);

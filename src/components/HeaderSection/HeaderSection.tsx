@@ -30,7 +30,7 @@ const HeaderSection: React.FC<HeaderSectionProps> = props => {
             </div>
           </div>
         </div>
-        <div className='tw-w-full tw-mt-3'>
+        <div className='tw-w-full tw-bg-white/10 tw-backdrop-blur-xl tw-rounded-2xl tw-p-4 md:tw-p-5 tw-border tw-border-white/20 tw-shadow-lg'>
           {props.children}
         </div>
       </div>
