@@ -6,7 +6,6 @@ import {
   Label,
   ObjectStatus,
   Text,
-  TextArea,
 } from '@ui5/webcomponents-react';
 
 const prettyJson = (value: any): string => {
@@ -116,37 +115,42 @@ export const DetalleAuditoria = (props: any) => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
           <div>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 8 }}>Request Body</Label>
-            <TextArea
-              rows={20}
-              readonly
-              style={{
-                width: '100%',
-                fontFamily: 'monospace',
-                fontSize: '12px',
-                borderRadius: '8px',
-                border: '1px solid #d1d5db',
-                padding: '8px'
-              } as any}
-              value={prettyJson(datosAuditoria?.entradaProceso)}
-            />
+            <pre style={{
+              margin: 0,
+              padding: '12px',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '6px',
+              fontFamily: 'monospace',
+              fontSize: '12px',
+              overflowY: 'auto',
+              maxHeight: '400px',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+            }}>
+              {prettyJson(datosAuditoria?.entradaProceso)}
+            </pre>
           </div>
           <div>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 8 }}>Response Body</Label>
-            <TextArea
-              rows={20}
-              readonly
-              style={{
-                width: '100%',
-                fontFamily: 'monospace',
-                fontSize: '12px',
-                borderRadius: '8px',
-                border: '1px solid #d1d5db',
-                padding: '8px'
-              } as any}
-              value={prettyJson(datosAuditoria?.respuestaProceso)}
-            />
+            <pre style={{
+              margin: 0,
+              padding: '12px',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '6px',
+              fontFamily: 'monospace',
+              fontSize: '12px',
+              overflowY: 'auto',
+              maxHeight: '400px',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+            }}>
+              {prettyJson(datosAuditoria?.respuestaProceso)}
+            </pre>
           </div>
         </div>
+
 
       </div>
     </Dialog>
