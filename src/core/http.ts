@@ -41,10 +41,9 @@ export const http = (oParamHeaders, config = {}): AxiosInstance => {
     };
   }
 
-  // En producción, usar URL relativa para que el Approuter del WorkZone
-  // agregue automáticamente el token de sesión del usuario
+  // URL absoluta del API Gateway (rutas relativas requieren destination configurada en BTP)
   const envlocal = import.meta.env.VITE_URL_APIGATEWAY ?? '';
-  const baseURL = isLocal ? envlocal : '';
+  const baseURL = isLocal ? envlocal : 'https://proyecto-apigateway-backend-dev.cfapps.us10-001.hana.ondemand.com';
 
   const instance = axios.create({
     baseURL,
