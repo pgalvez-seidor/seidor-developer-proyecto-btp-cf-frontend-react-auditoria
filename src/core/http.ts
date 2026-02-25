@@ -43,6 +43,7 @@ export const http = (oParamHeaders, config = {}): AxiosInstance => {
 
   // En producción, usar URL relativa para que el Approuter del WorkZone
   // agregue automáticamente el token de sesión del usuario
+  const envlocal = import.meta.env.VITE_URL_APIGATEWAY ?? '';
   const baseURL = isLocal ? envlocal : '';
 
   const instance = axios.create({
