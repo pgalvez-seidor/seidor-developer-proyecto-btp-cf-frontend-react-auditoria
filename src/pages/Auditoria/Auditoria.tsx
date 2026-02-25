@@ -159,10 +159,10 @@ export const Auditoria = () => {
       accessor: 'nombreProceso',
       Cell: ({ cell }) => (
         <div className='tw-w-full tw-text-left tw-pl-2 tw-whitespace-normal tw-break-words'>
-          {cell.value}
+          {cell.value ? cell.value.split('/').pop() : ''}
         </div>
       ),
-      minWidth: 400,
+      minWidth: 280,
     },
     {
       Header: (
@@ -207,17 +207,18 @@ export const Auditoria = () => {
       maxWidth: 200,
     },
     {
+      Header: <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Detalle</Text>,
       disableSortBy: true,
       id: 'actions',
       maxWidth: 100,
-      Cell: ({ cell }) => {
+      Cell: ({ row }: any) => {
         return (
           <div className='tw-w-full tw-flex tw-justify-center'>
             <NuamButton
               variant='secondary'
               icon='show'
               round={true}
-              onClick={() => selectRowAuditoriaInfo(cell)}
+              onClick={() => selectRowAuditoriaInfo(row.original)}
             />
           </div>
         );
@@ -225,8 +226,8 @@ export const Auditoria = () => {
     },
   ];
 
-  const selectRowAuditoriaInfo = cell => {
-    setDatosDetalleAuditoria(cell.row.original);
+  const selectRowAuditoriaInfo = (rowOriginal: any) => {
+    setDatosDetalleAuditoria(rowOriginal);
     setDialogDetalleAuditoria({ open: true });
   };
 
