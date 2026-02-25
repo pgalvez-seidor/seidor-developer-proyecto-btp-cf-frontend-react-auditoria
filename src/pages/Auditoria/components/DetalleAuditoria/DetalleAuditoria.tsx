@@ -36,7 +36,7 @@ export const DetalleAuditoria = (props: any) => {
 
   return (
     <Dialog
-      style={{ width: '80%', maxWidth: '1100px' }}
+      style={{ width: '90%', maxWidth: '1200px' }}
       open={props.dialogDetalleAuditoria.open}
       headerText={`Detalle: ${idCorto}`}
       footer={
@@ -54,15 +54,15 @@ export const DetalleAuditoria = (props: any) => {
         />
       }
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
         {/* Fila 1: campos principales */}
-        <FlexBox wrap='Wrap' style={{ gap: '1.5rem' }}>
-          <div>
+        <FlexBox wrap='Wrap' style={{ gap: '2rem' }}>
+          <div style={{ minWidth: '150px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Id Transacción</Label>
             <Text>{datosAuditoria?.idTransaccion}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '150px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Fecha</Label>
             <Text>
               {datosAuditoria?.createdAt
@@ -70,31 +70,31 @@ export const DetalleAuditoria = (props: any) => {
                 : '—'}
             </Text>
           </div>
-          <div>
+          <div style={{ minWidth: '100px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Usuario</Label>
             <Text>{datosAuditoria?.usuario}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '120px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Aplicación</Label>
             <Text>{datosAuditoria?.aplicacion}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '80px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Method</Label>
             <Text>{datosAuditoria?.methodEnvio}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '200px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Proceso</Label>
-            <Text>{datosAuditoria?.nombreProceso}</Text>
+            <Text style={{ wordBreak: 'break-all' }}>{datosAuditoria?.nombreProceso}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '80px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Tiempo</Label>
             <Text>{datosAuditoria?.tiempoProceso} ms</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '150px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Terminal</Label>
             <Text>{datosAuditoria?.terminal}</Text>
           </div>
-          <div>
+          <div style={{ minWidth: '100px' }}>
             <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Estado</Label>
             <ObjectStatus showDefaultIcon state={estado.state as any}>
               {estado.label}
@@ -102,25 +102,39 @@ export const DetalleAuditoria = (props: any) => {
           </div>
         </FlexBox>
 
-        <hr style={{ border: 'none', borderTop: '1px solid #e0e0e0' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb' }} />
 
         {/* Fila 2: Request y Response en columnas */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
           <div>
-            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 6 }}>Request Body</Label>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 8 }}>Request Body</Label>
             <TextArea
-              rows={18}
+              rows={20}
               readonly
-              style={{ width: '100%', fontFamily: 'monospace', fontSize: '12px' }}
+              style={{
+                width: '100%',
+                fontFamily: 'monospace',
+                fontSize: '12px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                padding: '8px'
+              } as any}
               value={prettyJson(datosAuditoria?.entradaProceso)}
             />
           </div>
           <div>
-            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 6 }}>Response Body</Label>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 8 }}>Response Body</Label>
             <TextArea
-              rows={18}
+              rows={20}
               readonly
-              style={{ width: '100%', fontFamily: 'monospace', fontSize: '12px' }}
+              style={{
+                width: '100%',
+                fontFamily: 'monospace',
+                fontSize: '12px',
+                borderRadius: '8px',
+                border: '1px solid #d1d5db',
+                padding: '8px'
+              } as any}
               value={prettyJson(datosAuditoria?.respuestaProceso)}
             />
           </div>

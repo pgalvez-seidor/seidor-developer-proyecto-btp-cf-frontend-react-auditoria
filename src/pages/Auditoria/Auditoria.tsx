@@ -207,7 +207,7 @@ export const Auditoria = () => {
       maxWidth: 200,
     },
     {
-      Header: <Text className='tw-text-left tw-pl-2 tw-text-[14px] tw-font-bold'>Detalle</Text>,
+      Header: '',
       disableSortBy: true,
       id: 'actions',
       maxWidth: 100,
@@ -215,10 +215,16 @@ export const Auditoria = () => {
         return (
           <div className='tw-w-full tw-flex tw-justify-center'>
             <NuamButton
-              variant='primary'
-              icon='show'
+              variant='secondary'
+              icon='navigation-right-arrow'
               round={true}
-              style={{ background: '#0070f2', color: 'white', border: 'none' }}
+              style={{
+                color: '#0070f2',
+                '--sapButton_BorderColor': '#0070f2',
+                minWidth: '36px',
+                width: '36px',
+                height: '36px'
+              } as any}
               onClick={() => selectRowAuditoriaInfo(row.original)}
             />
           </div>
