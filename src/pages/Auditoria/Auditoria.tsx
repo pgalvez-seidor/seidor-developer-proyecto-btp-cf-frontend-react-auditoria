@@ -347,8 +347,8 @@ export const Auditoria = () => {
     };
   }, []);
 
-  const [tableHeight, setTableHeight] = useState('auto');
-  const [dynamicRows, setDynamicRows] = useState(0); // Default
+  const [tableHeight, setTableHeight] = useState('600px');
+  const [dynamicRows, setDynamicRows] = useState(10); // Default mínimo seguro
 
   return (
     <div style={{ position: 'relative' }}>
@@ -546,7 +546,10 @@ export const Auditoria = () => {
       </div>
 
       <div className='tw-px-4 tw-pb-4'>
-        <div className='tw-bg-white tw-rounded-[1.5rem] tw-border tw-border-slate-200 tw-shadow-lg tw-overflow-hidden' style={{ height: tableHeight }}>
+        <div
+          className='tw-bg-white tw-rounded-[1.5rem] tw-border tw-border-slate-200 tw-shadow-lg tw-overflow-hidden'
+          style={{ height: tableHeight, minHeight: '500px' }}
+        >
           <AnalyticalTable
             headerRowHeight={60}
             id='table-container'
@@ -557,7 +560,7 @@ export const Auditoria = () => {
             infiniteScrollThreshold={5}
             loading={isLoading}
             onLoadMore={onLoadMore}
-            visibleRows={dynamicRows}
+            visibleRows={Math.max(dynamicRows, 8)}
             style={{ height: '100%', overflow: 'auto' }}
           />
         </div>
