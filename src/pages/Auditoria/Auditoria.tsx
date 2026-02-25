@@ -1,12 +1,8 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   Input,
-  Title,
   MultiComboBox,
   MultiComboBoxItem,
-  Panel,
-  FlexBox,
-  Button,
   Label,
   DatePicker,
   AnalyticalTable,
@@ -19,9 +15,10 @@ import {
   getAplicaciones,
   getListadoDatosAudotoriaPaginado,
   getProcesos,
+  getUsuarios,
 } from '../../services/auditoria.service';
 import { DetalleAuditoria } from './components/DetalleAuditoria/DetalleAuditoria';
-import { aplicaciones, paginacionOffset } from '../../utils/constants';
+import { paginacionOffset } from '../../utils/constants';
 import { AuditoriaContext } from '@/contexts/AuditoriaContext/AuditoriaContext';
 import { LoadingContext } from '@/contexts/LoadingContext/LoadingContext';
 import { SnackbarContext } from '@/contexts/SnackbarContext/SnackbarContext';
@@ -39,7 +36,6 @@ export const Auditoria = () => {
     page,
     setPage,
   } = useContext(AuditoriaContext);
-  const [dataAuditoria, setDataAuditoria] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [listaProcesos, setListaProcesos] = useState([]);
   const [listaAplicaciones, setListaAplicaciones] = useState([]);
@@ -59,7 +55,6 @@ export const Auditoria = () => {
     usuarios: [],
   };
   const [optionFilters, setOptionFilters] = useState(initialStateFilters);
-  const offset = useRef(paginacionOffset);
   const onLoadMore = () => {
     const paginaRevisa = page + 1;
     if (paginaRevisa <= oPaginationTableAuditoria.totalPages) {
@@ -240,21 +235,6 @@ export const Auditoria = () => {
     setOptionFilters(filtros);
   };
 
-  const formatearFecha = (fecha: string | Date): string => {
-    const date = new Date(fecha);
-    const formato = new Intl.DateTimeFormat('en-US', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    }).format(date);
-
-    return formato.replace(',', '');
-  };
-
   const handleChangeComboBox = (event: any) => {
     const { name } = event.target;
     const selectedValues = event.detail.items.map((item: any) => item.dataset.cod);
@@ -273,10 +253,14 @@ export const Auditoria = () => {
     setListaProcesos(processTransform);
   };
 
-  const getUsuarios = async () => {
-    // TODO: Implementar getListadoUsuarios cuando exista el endpoint
-    // Por ahora, lista vacía
-    setListaUsuarios([]);
+  // BRECHA 9: Implementado — carga usuarios únicos desde /auditoria/usuarios
+  const getUsuariosData = async () => {
+    const result = await getUsuarios();
+    const userTransform = (result.listaUsuarios || []).map((el: any) => ({
+      label: el.usuario,
+      value: el.usuario,
+    }));
+    setListaUsuarios(userTransform);
   };
 
   const getApp = async () => {
@@ -291,20 +275,6 @@ export const Auditoria = () => {
   };
 
   const getAuditoria = async (pagina: number) => {
-    //
-    // const data = await getListadoDatosAudotoriaPaginado({
-    //   page: pagina,
-    //   perPage: paginacionOffset,
-    //   filtro: optionFilters,
-    // });
-
-    // const dataTransformada = data.obtenerAuditoriaCabecera.map((item: any) => ({
-    //   ...item,
-    //   fecha_transaccion: formatearFecha(item.fecha_transaccion),
-    // }));
-    // console.log(dataTransformada);
-    // setDataAuditoria(prev => [...prev, ...dataTransformada]);
-
     try {
       const response = await getListadoDatosAudotoriaPaginado({
         page: pagina,
@@ -316,8 +286,6 @@ export const Auditoria = () => {
         setSnackbarState('Alerta!', 'No se encontraron registros.', 'WARNING');
         return;
       }
-      // setOPagination(respDatosGarantiaPaginado.results.oPagination);
-      // setDataGarantia((prev) => [...prev, ...respDatosGarantiaPaginado.results.oData]);
 
       setoPaginationTableAuditoria(response.results.oPagination);
       let copyTableAuditoria = [...tableAuditoria];
@@ -331,17 +299,11 @@ export const Auditoria = () => {
     }
   };
 
-  // const filtrarLista = () => {
-  //   console.log(optionFilters);
-  //   setDataAuditoria([]);
-  //   getAuditoria(1, optionFilters);
-  // };
-
   useEffect(() => {
     getProcess();
     getApp();
     filtrarLista();
-    getUsuarios();
+    getUsuariosData();
   }, []);
 
   const comboBoxItems = [
@@ -353,7 +315,6 @@ export const Auditoria = () => {
   useEffect(() => {
     const headerSection = document.getElementById('header-section');
     const tableHeaderSection = document.getElementById('table-header-section');
-    const tableContainerSection = document.getElementById('table-container');
 
     if (!headerSection || !tableHeaderSection) return;
 
@@ -448,14 +409,14 @@ export const Auditoria = () => {
                     showSelectAll={true}
                     className='tw-w-full'
                     onSelectionChange={handleChangeComboBox}
-                    onChange={function ks() {}}
-                    onClose={function ks() {}}
-                    onInput={function ks() {}}
-                    onOpen={function ks() {}}
+                    onChange={function ks() { }}
+                    onClose={function ks() { }}
+                    onInput={function ks() { }}
+                    onOpen={function ks() { }}
                     valueState='None'
                     name='aplicaciones'
 
-                    // value={optionFilters.aplicaciones}
+                  // value={optionFilters.aplicaciones}
                   >
                     {listaAplicaciones.map(item => (
                       <MultiComboBoxItem
@@ -474,13 +435,13 @@ export const Auditoria = () => {
                     showSelectAll={true}
                     className='tw-w-full'
                     onSelectionChange={handleChangeComboBox}
-                    onChange={function ks() {}}
-                    onClose={function ks() {}}
-                    onInput={function ks() {}}
-                    onOpen={function ks() {}}
+                    onChange={function ks() { }}
+                    onClose={function ks() { }}
+                    onInput={function ks() { }}
+                    onOpen={function ks() { }}
                     valueState='None'
                     name='usuarios'
-                    // value={optionFilters.aplicaciones}
+                  // value={optionFilters.aplicaciones}
                   >
                     {listaUsuarios.map(item => (
                       <MultiComboBoxItem
@@ -499,13 +460,13 @@ export const Auditoria = () => {
                     showSelectAll={true}
                     className='tw-w-full'
                     onSelectionChange={handleChangeComboBox}
-                    onChange={function ks() {}}
-                    onClose={function ks() {}}
-                    onInput={function ks() {}}
-                    onOpen={function ks() {}}
+                    onChange={function ks() { }}
+                    onClose={function ks() { }}
+                    onInput={function ks() { }}
+                    onOpen={function ks() { }}
                     valueState='None'
                     name='procesos'
-                    // value={optionFilters.procesos}
+                  // value={optionFilters.procesos}
                   >
                     {listaProcesos.map(item => (
                       <MultiComboBoxItem
@@ -524,13 +485,13 @@ export const Auditoria = () => {
                     className='tw-w-full'
                     showSelectAll={true}
                     onSelectionChange={handleChangeComboBox}
-                    onChange={function ks() {}}
-                    onClose={function ks() {}}
-                    onInput={function ks() {}}
-                    onOpen={function ks() {}}
+                    onChange={function ks() { }}
+                    onClose={function ks() { }}
+                    onInput={function ks() { }}
+                    onOpen={function ks() { }}
                     valueState='None'
                     name='estado'
-                    // value={optionFilters.estado}
+                  // value={optionFilters.estado}
                   >
                     {comboBoxItems.map(item => (
                       <MultiComboBoxItem
@@ -586,18 +547,18 @@ export const Auditoria = () => {
       <div className='tw-px-4 tw-pb-4'>
         <div className='tw-bg-white tw-rounded-[1.5rem] tw-border tw-border-slate-200 tw-shadow-lg tw-overflow-hidden' style={{ height: tableHeight }}>
           <AnalyticalTable
-          headerRowHeight={60}
-          id='table-container'
-          columns={headers}
-          data={tableAuditoria}
-          infiniteScroll={true}
-          highlightField='status'
-          infiniteScrollThreshold={5}
-          loading={isLoading}
-          onLoadMore={onLoadMore}
-          visibleRows={dynamicRows}
-          style={{ height: '100%', overflow: 'auto' }}
-        />
+            headerRowHeight={60}
+            id='table-container'
+            columns={headers}
+            data={tableAuditoria}
+            infiniteScroll={true}
+            highlightField='status'
+            infiniteScrollThreshold={5}
+            loading={isLoading}
+            onLoadMore={onLoadMore}
+            visibleRows={dynamicRows}
+            style={{ height: '100%', overflow: 'auto' }}
+          />
         </div>
       </div>
 
@@ -608,27 +569,6 @@ export const Auditoria = () => {
           datosAuditoria={datosDetalleAuditoria}
         />
       )}
-    </div>
-  );
-
-  return (
-    <div className='h-max'>
-      <div className='w-full px-4'>
-        {/* <Panel
-          collapsed
-          header={
-            <FlexBox alignItems="Center" fitContainer style={{ gap: '0.25rem' }}>
-              <Title level="H2">Filtros</Title>
-              <span style={{ flexGrow: 1 }} />
-              <Button onClick={filtrarLista} design="Emphasized">
-                Buscar
-              </Button>
-            </FlexBox>
-          }
-          headerText="Panel"
-          onToggle={function ks() {}}
-        ></Panel> */}
-      </div>
     </div>
   );
 };

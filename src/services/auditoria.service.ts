@@ -1,14 +1,16 @@
 import { http } from '../core/http';
 
-// Servicio adaptado al backend CAP NUAM
-// Backend: proyecto-btp-cf-backend-cap-auditoria
-// Entidades: Auditoria, VAuditoria, VAplicacion, VnombreProceso
+// BRECHA 1 (fix): El servicio ahora llama al backend Express propio
+// Backend: proyecto-btp-cf-backend-cap-auditoria → ruta base /auditoria
+// Ya NO llama directamente al OData CAP (/AuditoriaService/VAuditoria)
+
+const BASE_URL = '/api/auditoria/rest/auditoria';
 
 export const getProcesos = async (): Promise<any> => {
   try {
-    const response = await http({}).get('/api/base/auditoria/rest/AuditoriaService/VnombreProceso');
+    const response = await http({}).get(`${BASE_URL}/procesos`);
     return {
-      listaProcesos: response.data.value || []
+      listaProcesos: response.data.data || [],
     };
   } catch (error) {
     console.error('Error getProcesos:', error);
@@ -18,9 +20,9 @@ export const getProcesos = async (): Promise<any> => {
 
 export const getAplicaciones = async (): Promise<any> => {
   try {
-    const response = await http({}).get('/api/base/auditoria/rest/AuditoriaService/VAplicacion');
+    const response = await http({}).get(`${BASE_URL}/aplicaciones`);
     return {
-      listaAplicaciones: response.data.value || []
+      listaAplicaciones: response.data.data || [],
     };
   } catch (error) {
     console.error('Error getAplicaciones:', error);
@@ -28,72 +30,56 @@ export const getAplicaciones = async (): Promise<any> => {
   }
 };
 
+/** BRECHA 9: Implementado — antes siempre devolvía [] */
+export const getUsuarios = async (): Promise<any> => {
+  try {
+    const response = await http({}).get(`${BASE_URL}/usuarios`);
+    return {
+      listaUsuarios: response.data.data || [],
+    };
+  } catch (error) {
+    console.error('Error getUsuarios:', error);
+    return { listaUsuarios: [] };
+  }
+};
+
 export const getListadoDatosAudotoriaPaginado = async (oParam: any): Promise<any> => {
   try {
     const { page, perPage, filtro } = oParam;
 
-    // Construir query params OData
-    const filters: string[] = [];
+    const params: Record<string, any> = {
+      pagina: page,
+      limit: perPage,
+    };
 
-    // Paginación
-    const skip = (page - 1) * perPage;
-    const top = perPage;
+    if (filtro.fechaInicio) params.fFechaInicio = filtro.fechaInicio;
+    if (filtro.fechaFin) params.fFechaFin = filtro.fechaFin;
+    if (filtro.transaccion) params.search = filtro.transaccion;
 
-    // Filtros
-    if (filtro.procesos && filtro.procesos.length > 0) {
-      const procesoFilters = filtro.procesos.map((p: string) => `nombreProceso eq '${p}'`).join(' or ');
-      filters.push(`(${procesoFilters})`);
+    if (filtro.procesos?.length > 0) {
+      params.filtrosProcesos = filtro.procesos;
+    }
+    if (filtro.estado?.length > 0) {
+      params.filtrosEstadosAuditoria = filtro.estado.map(String);
+    }
+    if (filtro.aplicaciones?.length > 0) {
+      params.filtrosAplicaciones = filtro.aplicaciones;
     }
 
-    if (filtro.estado && filtro.estado.length > 0) {
-      const estadoFilters = filtro.estado.map((e: number) => `idEstado eq ${e}`).join(' or ');
-      filters.push(`(${estadoFilters})`);
-    }
+    const response = await http({}).get(`${BASE_URL}/cabecera-paginado`, { params });
 
-    if (filtro.aplicaciones && filtro.aplicaciones.length > 0) {
-      const appFilters = filtro.aplicaciones.map((a: string) => `aplicacion eq '${a}'`).join(' or ');
-      filters.push(`(${appFilters})`);
-    }
-
-    if (filtro.transaccion) {
-      filters.push(`contains(idTransaccion, '${filtro.transaccion}')`);
-    }
-
-    if (filtro.usuarios && filtro.usuarios.length > 0) {
-      const userFilters = filtro.usuarios.map((u: string) => `usuario eq '${u}'`).join(' or ');
-      filters.push(`(${userFilters})`);
-    }
-
-    if (filtro.fechaInicio) {
-      filters.push(`createdAt ge ${new Date(filtro.fechaInicio).toISOString()}`);
-    }
-
-    if (filtro.fechaFin) {
-      filters.push(`createdAt le ${new Date(filtro.fechaFin).toISOString()}`);
-    }
-
-    // Construir URL
-    let url = `/api/base/auditoria/rest/AuditoriaService/VAuditoria?$skip=${skip}&$top=${top}&$count=true&$orderby=createdAt desc`;
-
-    if (filters.length > 0) {
-      url += `&$filter=${filters.join(' and ')}`;
-    }
-
-    const response = await http({}).get(url);
-
-    const totalItems = response.data['@odata.count'] || 0;
-    const totalPages = Math.ceil(totalItems / perPage);
+    const data = response.data;
 
     return {
       results: {
-        oData: response.data.value || [],
+        oData: data.obtenerAuditoriaCabecera || [],
         oPagination: {
-          currentPage: page,
+          currentPage: data.pagina || page,
           perPage,
-          totalItems,
-          totalPages
-        }
-      }
+          totalItems: data.cantidadRegTotales || 0,
+          totalPages: data.paginaTotales || 1,
+        },
+      },
     };
   } catch (error) {
     console.error('Error getListadoDatosAudotoriaPaginado:', error);

@@ -14,6 +14,13 @@
             "csrfProtection": false
         },
         {
+            "source": "^/api/auditoria/(.*)$",
+            "target": "/api/auditoria/$1",
+            "destination": "nuam-apigateway-backend-dev",
+            "authenticationType": "none",
+            "csrfProtection": false
+        },
+        {
             "source": "^/api/base/auditoria/(.*)$",
             "target": "/api/base/auditoria/$1",
             "destination": "nuam-apigateway-backend-dev",

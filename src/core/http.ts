@@ -41,7 +41,7 @@ export const http = (oParamHeaders, config = {}): AxiosInstance => {
     };
   }
 
-  // En desarrollo local usa proxy de Vite, en producción llama directamente al API Gateway
+  // En producción, llamar directamente al gateway (igual que usuarios/maestros)
   const envlocal = import.meta.env.VITE_URL_APIGATEWAY ?? '';
   const baseURL = isLocal ? envlocal : 'https://proyecto-apigateway-backend-dev.cfapps.us10-001.hana.ondemand.com';
 

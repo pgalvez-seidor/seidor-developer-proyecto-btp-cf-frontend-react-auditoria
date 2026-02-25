@@ -1,7 +1,7 @@
 _schema-version: '3.2'
 ID: nuam-react-auditoria-standalone
 version: 0.0.1
-description: "NUAM Auditoria Frontend (React Standalone) - DEV"
+description: "NUAM Auditoria Frontend (React Standalone) - QAS"
 
 parameters:
   enable-parallel-deployments: true
