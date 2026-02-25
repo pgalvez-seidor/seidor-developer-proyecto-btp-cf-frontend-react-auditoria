@@ -54,7 +54,15 @@ export const DetalleAuditoria = (props: any) => {
         />
       }
     >
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      {/* Reset sapField_BorderCornerRadius: el index.css lo pone en 999px globalmente,
+          lo que hace que el TextArea se vea como un círculo. Aquí lo forzamos a 4px. */}
+      <div style={{
+        padding: '1.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.5rem',
+        '--sapField_BorderCornerRadius': '4px',
+      } as any}>
 
         {/* Fila 1: campos principales */}
         <FlexBox wrap='Wrap' style={{ gap: '2rem' }}>
