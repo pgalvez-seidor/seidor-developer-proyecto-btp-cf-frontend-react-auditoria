@@ -76,7 +76,9 @@ export const Auditoria = () => {
         }, 1000);
       }
     }
-  }, [isLoading, tableAuditoria, page]);
+    // NOTA: tableAuditoria eliminado de deps para evitar loop:
+    // setTableAuditoria → re-corre effect → getAuditoria de nuevo → loop infinito
+  }, [isLoading, page]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtrarLista = () => {
     setIsLoading(true);
@@ -246,8 +248,8 @@ export const Auditoria = () => {
 
     const processTransform = process.listaProcesos.map(el => {
       return {
-        label: el.nombreProceso,
-        value: el.nombreProceso,
+        label: el.nombre_proceso,
+        value: el.nombre_proceso,
       };
     });
     setListaProcesos(processTransform);
