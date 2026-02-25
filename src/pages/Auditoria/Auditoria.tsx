@@ -246,14 +246,13 @@ export const Auditoria = () => {
 
     const processTransform = process.listaProcesos.map(el => {
       return {
-        label: el.nombre_proceso,
-        value: el.nombre_proceso,
+        label: el.nombreProceso,
+        value: el.nombreProceso,
       };
     });
     setListaProcesos(processTransform);
   };
 
-  // BRECHA 9: Implementado — carga usuarios únicos desde /auditoria/usuarios
   const getUsuariosData = async () => {
     const result = await getUsuarios();
     const userTransform = (result.listaUsuarios || []).map((el: any) => ({
