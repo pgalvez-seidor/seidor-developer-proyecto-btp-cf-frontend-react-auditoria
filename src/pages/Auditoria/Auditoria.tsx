@@ -215,9 +215,10 @@ export const Auditoria = () => {
         return (
           <div className='tw-w-full tw-flex tw-justify-center'>
             <NuamButton
-              variant='secondary'
+              variant='primary'
               icon='show'
               round={true}
+              style={{ background: '#0070f2', color: 'white', border: 'none' }}
               onClick={() => selectRowAuditoriaInfo(row.original)}
             />
           </div>

@@ -1,106 +1,132 @@
 import NuamButton from '@/components/NuamButton/NuamButton';
 import {
   Bar,
-  Button,
   Dialog,
-  Form,
-  FormItem,
+  FlexBox,
   Label,
+  ObjectStatus,
   Text,
   TextArea,
 } from '@ui5/webcomponents-react';
 
-export const DetalleAuditoria = props => {
+const prettyJson = (value: any): string => {
+  if (!value) return '';
+  if (typeof value === 'object') return JSON.stringify(value, null, 2);
+  try {
+    return JSON.stringify(JSON.parse(value), null, 2);
+  } catch {
+    return String(value);
+  }
+};
+
+const estadoMap: Record<number, { state: string; label: string }> = {
+  1: { state: 'Positive', label: 'Ok' },
+  2: { state: 'Critical', label: 'Alerta' },
+  3: { state: 'Negative', label: 'Error' },
+};
+
+export const DetalleAuditoria = (props: any) => {
   const { datosAuditoria } = props;
-  const obtenerIDTranssaccion = id => {
-    const text = id.substring(id.length - 10);
-    return text;
-  };
+
+  const idCorto = datosAuditoria?.idTransaccion
+    ? datosAuditoria.idTransaccion.substring(datosAuditoria.idTransaccion.length - 12)
+    : '';
+
+  const estado = estadoMap[datosAuditoria?.idEstado] ?? { state: 'None', label: '—' };
+
   return (
     <Dialog
-      className='footerPartNoPadding topNoPadding'
-      //   stretch={true}
-
-      style={{
-        width: '80%',
-        maxWidth: '1200px',
-      }} // Adjust the width as needed
+      style={{ width: '80%', maxWidth: '1100px' }}
       open={props.dialogDetalleAuditoria.open}
+      headerText={`Detalle: ${idCorto}`}
       footer={
         <Bar
           design='Footer'
           endContent={
-            <>
-              <NuamButton
-                variant='secondary'
-                icon='sys-cancel'
-                onClick={function ks() {
-                  props.setDialogDetalleAuditoria({
-                    open: false,
-                    title: '',
-                  });
-                }}
-              >
-                Cancelar
-              </NuamButton>
-            </>
+            <NuamButton
+              variant='secondary'
+              icon='sys-cancel'
+              onClick={() => props.setDialogDetalleAuditoria({ open: false })}
+            >
+              Cerrar
+            </NuamButton>
           }
         />
       }
-      headerText={'Detalle: ' + obtenerIDTranssaccion(datosAuditoria.idTransaccion)}
-      onBeforeClose={function ks() {}}
-      onBeforeOpen={function ks() {}}
-      onClose={function ks() {}}
-      onOpen={function ks() {}}
     >
-      <Form
-        style={{ justifyContent: 'start' }}
-        labelSpan='S12 M4 L4 XL4'
-        layout='S1 M1 L2 XL2'
-      >
-        <FormItem labelContent={<Label>Nombre Proceso:</Label>}>
-          <Text>{datosAuditoria.nombreProceso}</Text>
-        </FormItem>
-        <FormItem labelContent={<Label>Terminal:</Label>}>
-          <Text>{datosAuditoria.terminal}</Text>
-        </FormItem>
-        <FormItem labelContent={<Label>Aplicación:</Label>}>
-          <Text>{datosAuditoria.aplicacion}</Text>
-        </FormItem>
-        <FormItem labelContent={<Label>Fecha de Creación:</Label>}>
-          <Text>{datosAuditoria.createdAt ? new Date(datosAuditoria.createdAt).toLocaleString('es-ES') : ''}</Text>
-        </FormItem>
-        <FormItem labelContent={<Label>Tiempo:</Label>}>
-          <Text>{datosAuditoria.tiempoProceso} ms</Text>
-        </FormItem>
-        <FormItem labelContent={<Label>Method:</Label>}>
-          <Text>{datosAuditoria.methodEnvio}</Text>
-        </FormItem>
+      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-        <FormItem labelContent={<Label>Estado:</Label>}>
-          <Text>{datosAuditoria.idEstado === 1 ? 'Ok' : 'Error'}</Text>
-        </FormItem>
+        {/* Fila 1: campos principales */}
+        <FlexBox wrap='Wrap' style={{ gap: '1.5rem' }}>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Id Transacción</Label>
+            <Text>{datosAuditoria?.idTransaccion}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Fecha</Label>
+            <Text>
+              {datosAuditoria?.createdAt
+                ? new Date(datosAuditoria.createdAt).toLocaleString('es-ES')
+                : '—'}
+            </Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Usuario</Label>
+            <Text>{datosAuditoria?.usuario}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Aplicación</Label>
+            <Text>{datosAuditoria?.aplicacion}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Method</Label>
+            <Text>{datosAuditoria?.methodEnvio}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Proceso</Label>
+            <Text>{datosAuditoria?.nombreProceso}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Tiempo</Label>
+            <Text>{datosAuditoria?.tiempoProceso} ms</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Terminal</Label>
+            <Text>{datosAuditoria?.terminal}</Text>
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 4 }}>Estado</Label>
+            <ObjectStatus showDefaultIcon state={estado.state as any}>
+              {estado.label}
+            </ObjectStatus>
+          </div>
+        </FlexBox>
 
-        <FormItem labelContent={<Label>Usuario:</Label>}>
-          <Text>{datosAuditoria.usuario}</Text>
-        </FormItem>
+        <hr style={{ border: 'none', borderTop: '1px solid #e0e0e0' }} />
 
-        <FormItem labelContent={<Label>Request Body:</Label>}>
-          <TextArea
-            rows={12}
-            readonly={true}
-            value={JSON.stringify(datosAuditoria.entradaProceso, null, 2)}
-          ></TextArea>
-        </FormItem>
+        {/* Fila 2: Request y Response en columnas */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 6 }}>Request Body</Label>
+            <TextArea
+              rows={18}
+              readonly
+              style={{ width: '100%', fontFamily: 'monospace', fontSize: '12px' }}
+              value={prettyJson(datosAuditoria?.entradaProceso)}
+            />
+          </div>
+          <div>
+            <Label style={{ fontWeight: 700, display: 'block', marginBottom: 6 }}>Response Body</Label>
+            <TextArea
+              rows={18}
+              readonly
+              style={{ width: '100%', fontFamily: 'monospace', fontSize: '12px' }}
+              value={prettyJson(datosAuditoria?.respuestaProceso)}
+            />
+          </div>
+        </div>
 
-        <FormItem labelContent={<Label>Response Body:</Label>}>
-          <TextArea
-            rows={12}
-            readonly={true}
-            value={JSON.stringify(datosAuditoria.respuestaProceso, null, 2)}
-          ></TextArea>
-        </FormItem>
-      </Form>
+      </div>
     </Dialog>
   );
 };
